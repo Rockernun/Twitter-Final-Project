@@ -37,7 +37,7 @@ export default function CreateAccount() {
           placeholder="Confirm Password"
           errors={[]}
         />
-        <FormButton loading={false} text="Create Account" />
+        <FormButton text="Create Account" />
       </form>
     </div>
   );

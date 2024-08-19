@@ -5,7 +5,7 @@ import SocialLogin from "@/components/social-login";
 export default function LogIn() {
   const handleForm = async (formData: FormData) => {
     "use server";
-    console.log(formData.get("email"), formData.get("password")); //  입력된 정보 확인 가능
+    await new Promise((resolve) => setTimeout(resolve, 3000));
   };
   return (
     <div className="flex flex-col gap-10 py-8 px-6">
@@ -28,7 +28,7 @@ export default function LogIn() {
           placeholder="Password"
           errors={[]}
         />
-        <FormButton loading={false} text="Log In" />
+        <FormButton text="Log In" />
       </form>
       <SocialLogin />
     </div>
