@@ -9,12 +9,7 @@ export default function Home() {
         <h2 className="text-2xl">트위터에 오신 것을 환영합니다</h2>
       </div>
       <div className="flex flex-col items-center gap-3 w-full">
-        <Link
-          href="/create-account"
-          className="w-full bg-blue-500 text-white
-        text-lg font-medium py-2.5 rounded-md text-center
-        hover:bg-blue-300 transition-colors"
-        >
+        <Link href="/create-account" className="primary-btn py-2.5 text-lg">
           트위터 시작하기
         </Link>
         <div className="flex gap-2">

@@ -7,3 +7,11 @@
     @apply text-blue-500;
   }
 }
+
+@layer components {
+  .primary-btn {
+    @apply w-full bg-blue-500 text-white
+       font-medium rounded-md text-center
+        hover:bg-blue-300 transition-colors;
+  }
+}
