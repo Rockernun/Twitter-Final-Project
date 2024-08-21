@@ -19,13 +19,6 @@ export default function SMSLogin() {
         <h2 className="text-xl">Verify your phone number</h2>
       </div>
       <form action={action} className="flex flex-col gap-3">
-        <FormInput
-          name="phone"
-          required
-          type="text"
-          placeholder="Phone number"
-          errors={state.error?.formErrors}
-        />
         {state.token ? (
           <FormInput
             name="token"
@@ -34,12 +27,19 @@ export default function SMSLogin() {
             placeholder="Verification Code"
             min={100000}
             max={999999}
+            errors={state.error?.formErrors}
           />
-        ) : null}
+        ) : (
+          <FormInput
+            name="phone"
+            required
+            type="text"
+            placeholder="Phone number"
+            errors={state.error?.formErrors}
+          />
+        )}
         <FormButton text={state.token ? "토큰 인증하기" : "인증 문자 보내기"} />
       </form>
     </div>
   );
 }
-
-//  왜 14번 라인에서 두 번째 파라미터로 null을, 29번 라인에 state?.token을 작성하면 Unhandled Runtime Error가 발생할까?
