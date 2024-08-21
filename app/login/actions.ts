@@ -1,10 +1,30 @@
 "use server";
 
+import {
+  PASSWORD_MIN_LENGTH,
+  PASSWORD_REGEX,
+  PASSWORD_REGEX_ERROR,
+} from "@/lib/constants";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 
-export const handleForm = async (prevState: any, formData: FormData) => {
-  redirect("/"); //  이런 식으로 해당 POST 요청이 완료되면 리다이렉트 시킬 수도 있다.
-  return {
-    error: ["wrong password...", "Password too short..."],
+const formSchema = z.object({
+  email: z.string().email().toLowerCase(),
+  password: z
+    .string()
+    .min(PASSWORD_MIN_LENGTH)
+    .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
+});
+
+export async function login(prevState: any, formData: FormData) {
+  const data = {
+    email: formData.get("email"),
+    password: formData.get("password"),
   };
-};
+  const result = formSchema.safeParse(data);
+  if (!result.success) {
+    return result.error.flatten();
+  } else {
+    console.log(data);
+  }
+}
