@@ -20,6 +20,8 @@ export default function CreateAccount() {
           type="text"
           placeholder="Username"
           errors={state?.fieldErrors.username}
+          minLength={3}
+          maxLength={10}
         />
         <FormInput
           name="email"
@@ -31,6 +33,8 @@ export default function CreateAccount() {
         <FormInput
           name="password"
           required
+          minLength={4}
+          maxLength={9}
           type="password"
           placeholder="Password"
           errors={state?.fieldErrors.password}
@@ -38,6 +42,8 @@ export default function CreateAccount() {
         <FormInput
           name="confirm_password"
           required
+          minLength={4}
+          maxLength={9}
           type="password"
           placeholder="Confirm Password"
           errors={state?.fieldErrors.confirm_password}
