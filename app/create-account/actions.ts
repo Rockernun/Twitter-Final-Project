@@ -6,6 +6,7 @@ import {
 } from "@/lib/constants";
 import db from "@/lib/db";
 import { z } from "zod";
+import bcrypt from "bcrypt";
 
 async function checkUniqueUsername(username: string) {
   const user = await db.user.findUnique({
@@ -81,19 +82,18 @@ export async function createAccount(prevState: any, formData: FormData) {
   if (!result.success) {
     return result.error.flatten();
   } else {
-    //  username이 이미 존재하는지
-    //  email을 이미 누가 사용하고 있는지
-    //  위의 2가지를 통과할 때, 비밀번호를 해싱한다.
-    //  사용자를 데이터베이스에 저장하고, 저장되면 사용자를 로그인 시킨다.
-    //  home으로 redirect 시키기
+    const hashedPassword = await bcrypt.hash(result.data.password, 12);
+    console.log(hashedPassword);
+    const user = await db.user.create({
+      data: {
+        username: result.data.username,
+        email: result.data.email,
+        password: hashedPassword,
+      },
+      select: {
+        id: true,
+      },
+    });
+    console.log(user);
   }
 }
-
-//  Unhandled Runtime Error 발생
-/*
-Error: Async refinement encountered during synchronous parse operation.
-       Use .parseAsync instead.
-*/
-//  checkUniqueEmail과 checkUniqueUsername 모두 async와 await를 가지고 있다.
-//  그래서 Zod도 await를 하도록 해야 한다.
-//  따라서 safeParse를 하고 싶지만 async로 하고 싶다고 메서드를 수정해야 한다.
