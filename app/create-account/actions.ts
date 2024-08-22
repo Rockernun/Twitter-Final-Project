@@ -7,6 +7,9 @@ import {
 import db from "@/lib/db";
 import { z } from "zod";
 import bcrypt from "bcrypt";
+import { cookies } from "next/headers";
+import { getIronSession } from "iron-session";
+import { redirect } from "next/navigation";
 
 async function checkUniqueUsername(username: string) {
   const user = await db.user.findUnique({
@@ -72,6 +75,7 @@ const formSchema = z
   });
 
 export async function createAccount(prevState: any, formData: FormData) {
+  console.log(cookies());
   const data = {
     username: formData.get("username"),
     email: formData.get("email"),
@@ -94,6 +98,17 @@ export async function createAccount(prevState: any, formData: FormData) {
         id: true,
       },
     });
-    console.log(user);
+    //  쿠키에 넣고 싶은 정보를 session에 저장(사용자에게 user-ticket 쿠키를 받는다)
+    const session = await getIronSession(cookies(), {
+      cookieName: "user-ticket",
+      password: process.env.COOKIE_PASSWORD!, //  끝의 ! 표시는 TS에게 .env 안에 COOKIE_PASSWORD가 무조건 존재한다는 것을 알려주는 것
+    });
+    //@ts-ignore
+    session.id = user.id; //  쿠키에 데이터를 추가한다.
+    await session.save(); //  그리고 쿠키를 저장
+    redirect("/profile");
   }
 }
+
+//  user-ticket 쿠키가 존재할 수도, 존재하지 않을 수도 있다.
+//  존재하지 않는다면 iron session이 암호화된 user-ticket 쿠키를 만든다.
