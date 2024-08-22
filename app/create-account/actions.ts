@@ -8,33 +8,8 @@ import db from "@/lib/db";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import { cookies } from "next/headers";
-import { getIronSession } from "iron-session";
 import { redirect } from "next/navigation";
 import getSession from "@/lib/session";
-
-async function checkUniqueUsername(username: string) {
-  const user = await db.user.findUnique({
-    where: {
-      username,
-    },
-    select: {
-      id: true,
-    },
-  });
-  return !Boolean(user);
-}
-
-async function checkUniqueEmail(email: string) {
-  const userEmail = await db.user.findUnique({
-    where: {
-      email,
-    },
-    select: {
-      id: true,
-    },
-  });
-  return !Boolean(userEmail);
-}
 
 function checkPassword({
   password,
@@ -54,21 +29,52 @@ const formSchema = z
         required_error: "Username을 입력해주세요!",
       })
       .toLowerCase()
-      .trim()
-      .refine(checkUniqueUsername, "이미 존재하는 Username입니다!"),
-    email: z
-      .string()
-      .email()
-      .toLowerCase()
-      .refine(
-        checkUniqueEmail,
-        "해당 이메일은 이미 등록되어 있는 이메일입니다!"
-      ),
+      .trim(),
+    email: z.string().email().toLowerCase(),
     password: z
       .string()
       .min(PASSWORD_MIN_LENGTH)
       .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
     confirm_password: z.string().min(9),
+  })
+
+  .superRefine(async ({ username }, ctx) => {
+    const user = await db.user.findUnique({
+      where: {
+        username,
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (user) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Username이 이미 사용 중입니다!",
+        path: ["username"],
+        fatal: true,
+      });
+      return z.NEVER;
+    }
+  })
+  .superRefine(async ({ email }, ctx) => {
+    const user = await db.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (user) {
+      ctx.addIssue({
+        code: "custom",
+        message: "이메일이 이미 사용 중입니다!",
+        path: ["email"],
+        fatal: true,
+      });
+      return z.NEVER;
+    }
   })
   .refine(checkPassword, {
     message: "비밀번호가 달라요!",
@@ -76,7 +82,6 @@ const formSchema = z
   });
 
 export async function createAccount(prevState: any, formData: FormData) {
-  console.log(cookies());
   const data = {
     username: formData.get("username"),
     email: formData.get("email"),
@@ -99,7 +104,6 @@ export async function createAccount(prevState: any, formData: FormData) {
         id: true,
       },
     });
-    //  사용자가 로그인 상태인지 알고 싶을 때는 getSession으로 세션에 id가 있는지 검사하면 된다.
     const session = await getSession();
     session.id = user.id;
     await session.save();
