@@ -1,11 +1,18 @@
 import { TweetDetail } from "@/app/(tabs)/tweets/[id]/page";
 import { formatToTimeAgo } from "@/lib/utils";
+import TweetLikeButton from "./tweet-like-button";
 
 interface TweetDetailItemsProps {
   tweet: TweetDetail;
+  likeCount: number;
+  isLiked: boolean;
 }
 
-export default function TweetDetailItem({ tweet }: TweetDetailItemsProps) {
+export default function TweetDetailItem({
+  tweet,
+  likeCount,
+  isLiked,
+}: TweetDetailItemsProps) {
   return (
     <article className="flex gap-5">
       <div className="bg-neutral-500 size-28 rounded-md" />
@@ -19,6 +26,11 @@ export default function TweetDetailItem({ tweet }: TweetDetailItemsProps) {
           </span>
         </div>
         <p className="w-full">{tweet?.context}</p>
+        <TweetLikeButton
+          isLiked={isLiked}
+          likeCount={likeCount}
+          tweetId={tweet!.id}
+        />
       </div>
     </article>
   );
