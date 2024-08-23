@@ -21,7 +21,6 @@ export async function smsLogin(prevState: ActionState, formData: FormData) {
   const phone = formData.get("phone");
   const token = formData.get("token");
 
-  //  initialState.token이 false인지 check
   if (!prevState.token) {
     const result = phoneSchema.safeParse(phone);
     if (!result.success) {

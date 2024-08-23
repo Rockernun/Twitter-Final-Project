@@ -57,11 +57,11 @@ export async function login(prevState: any, formData: FormData) {
         password: true,
       },
     });
-    //  bcrypt로 작성된 비밀번호로 해당 해시값을 만들었는지 알 수 있다.
     const ok = await bcrypt.compare(result.data.password, user!.password ?? "");
     if (ok) {
       const session = await getSession();
       session.id = user!.id;
+      await session.save();
       redirect("/profile");
     } else {
       return {
@@ -73,8 +73,3 @@ export async function login(prevState: any, formData: FormData) {
     }
   }
 }
-
-//  이메일로 사용자를 찾는다.
-//  만약 사용자를 찾았을 때, 비밀번호의 해시값을 확인한다.
-//  비밀번호의 해시값이 일치한다면 사용자를 로그인 시킨다.
-//  그리고 사용자를 /profile 페이지로 redirect 시킨다.

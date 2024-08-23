@@ -26,10 +26,14 @@ export default async function Profile() {
     redirect("/");
   };
   return (
-    <div>
-      <h1>Welcome! {user?.username}!</h1>
+    <div className="flex flex-col mt-20">
+      <h1 className="text-center text-white">
+        Welcome!
+        <br />
+        {user?.username}!
+      </h1>
       <form action={logOut}>
-        <button>로그아웃</button>
+        <button className="btn mt-10">로그아웃</button>
       </form>
     </div>
   );
