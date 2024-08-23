@@ -21,13 +21,15 @@ export default function TweetListItem({
     <li>
       <Link
         href={`/tweets/${id}`}
-        className="flex gap-5 border-b-gray-500 border-b-[1px] pb-4"
+        className="grid grid-cols-[126px_1fr] gap-5 border-b-gray-500 border-b-[1px] pb-4"
       >
         <div className="bg-neutral-500 size-28 rounded-md" />
-        <div className="flex flex-col gap-2">
-          <h4>{username}</h4>
-          <p>{context}</p>
-          <span>{formatToTimeAgo(created_at.toString())}</span>
+        <div className="flex flex-col gap-3 w-full">
+          <div className="flex flex-row justify-between *:text-sm">
+            <h4 className="font-semibold">{username}</h4>
+            <span>{formatToTimeAgo(created_at.toString())}</span>
+          </div>
+          <p className="w-full">{context}</p>
         </div>
       </Link>
     </li>
