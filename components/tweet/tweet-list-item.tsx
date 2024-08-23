@@ -9,7 +9,6 @@ interface TweetListProps {
     id: number;
     username: string;
   };
-  updated_at: true;
 }
 
 export default function TweetListItem({
