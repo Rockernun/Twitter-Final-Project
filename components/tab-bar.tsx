@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function TabBar() {
+export default function TabBar({ username }: { username: string }) {
   const pathname = usePathname();
   return (
     <div className="fixed bottom-0 bg-neutral-100 text-neutral-900  border-neutal-600 w-full max-w-screen-sm">
@@ -24,8 +24,11 @@ export default function TabBar() {
           </Link>
         </li>
         <li className="hover:bg-blue-500 hover:text-white">
-          <Link href="/profile" className="flex flex-col items-center">
-            {pathname === "/profile" ? (
+          <Link
+            href={`/users/${username}`}
+            className="flex flex-col items-center"
+          >
+            {pathname === `/users/${username}` ? (
               <SolidUserIcon className="size-7" />
             ) : (
               <UserIcon className="size-7" />

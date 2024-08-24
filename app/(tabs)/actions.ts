@@ -1,9 +1,16 @@
 "use server";
 
 import db from "@/lib/db";
+import getSession from "@/lib/session";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+
+export async function logOut() {
+  const session = await getSession();
+  session.destroy();
+  redirect("/start");
+}
 
 export default async function getMoreTweet(page: number) {
   const otherTweet = await db.tweet.findMany({

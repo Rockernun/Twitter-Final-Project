@@ -1,6 +1,8 @@
 import FormButton from "@/components/form-btn";
 import { getUser } from "./actions";
 import TweetListItem from "@/components/tweet/tweet-list-item";
+import Link from "next/link";
+import ButtonLogOut from "@/components/form/button-logout";
 
 export default async function User({ params }: { params: { id: string } }) {
   const user = await getUser(params.id);
@@ -28,9 +30,12 @@ export default async function User({ params }: { params: { id: string } }) {
             <p>{user?.bio ? user.bio : "자기 소개를 해볼까요?"}</p>
           </li>
           <li className="w-full">
-            <form className="w-full">
-              <FormButton text="프로필 편집" />
-            </form>
+            <Link
+              href={`/users/${user?.username}/edit`}
+              className="w-full p-3 rounded-3xl mt-3 text-center bg-blue-500 text-white font-medium hover:bg-green-500 transition disabled:bg-neutral-400 disabled:text-neutral-100"
+            >
+              프로필 편집
+            </Link>
           </li>
         </ul>
       </section>
@@ -42,6 +47,7 @@ export default async function User({ params }: { params: { id: string } }) {
           ))}
         </ul>
       </section>
+      <ButtonLogOut />
     </div>
   );
 }
