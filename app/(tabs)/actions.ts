@@ -1,6 +1,7 @@
 "use server";
 
 import db from "@/lib/db";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 export default async function getMoreTweet(page: number) {
@@ -43,17 +44,7 @@ export async function getSearchedTweet(_: any, formData: FormData) {
   if (!result.success) {
     return result.error.flatten();
   } else {
-    const tweets = await db.tweet.findMany({
-      where: {
-        OR: [
-          {
-            context: {
-              contains: result.data.keyword,
-            },
-          },
-        ],
-      },
-    });
-    console.log(tweets);
+    const encodedKeyword = encodeURI(result.data.keyword);
+    redirect(`/search?keyword=${encodedKeyword}`);
   }
 }

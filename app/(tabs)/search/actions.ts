@@ -11,5 +11,18 @@ export async function searchTweets(keyword: string) {
         },
       ],
     },
+    select: {
+      id: true,
+      created_at: true,
+      updated_at: true,
+      context: true,
+      user: {
+        select: {
+          id: true,
+          username: true,
+        },
+      },
+    },
   });
+  return tweets;
 }

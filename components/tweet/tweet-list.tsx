@@ -29,6 +29,12 @@ export default function TweetList({ initialTweets }: TweetListProps) {
         setPage((prev) => prev + 1);
         setTweets(newTweets);
       }
+    } else {
+      newTweets = await getMoreTweet(page - 1);
+      if (newTweets.length !== 0) {
+        setPage((prev) => prev - 1);
+        setTweets(newTweets);
+      }
     }
     setLoading(false);
   };
