@@ -1,14 +1,19 @@
 "use client";
 
-import { getSearchedTweet } from "@/app/(tabs)/actions";
+import { validateSearchKeyword } from "@/app/(tabs)/actions";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import { useFormState } from "react-dom";
 
 export default function SearchBar() {
-  const [state, action] = useFormState(getSearchedTweet, null);
+  const [state, action] = useFormState(validateSearchKeyword, null);
   return (
-    <header className="bg-blue-500 text-white py-4 px-5 flex items-center justify-between">
-      <h1 className="font-bold">Twitter</h1>
+    <header className="bg-blue-200 text-black py-4 px-5 flex items-center justify-between">
+      <h1 className="font-bold">
+        <Link href="/" className="hover:text-black">
+          Twitter
+        </Link>
+      </h1>
       <div>
         <form action={action} className="flex gap-1 relative">
           <button className="absolute top-1 left-1">

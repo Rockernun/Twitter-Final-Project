@@ -1,6 +1,7 @@
 "use server";
 
 import db from "@/lib/db";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -35,16 +36,16 @@ const searchSchema = z.object({
   }),
 });
 
-export async function getSearchedTweet(_: any, formData: FormData) {
+export async function validateSearchKeyword(_: any, formData: FormData) {
   const data = {
     keyword: formData.get("keyword"),
   };
   const result = await searchSchema.safeParseAsync(data);
-  console.log(result);
   if (!result.success) {
     return result.error.flatten();
   } else {
     const encodedKeyword = encodeURI(result.data.keyword);
+    revalidatePath(`/search?keyword=${encodedKeyword}`);
     redirect(`/search?keyword=${encodedKeyword}`);
   }
 }
