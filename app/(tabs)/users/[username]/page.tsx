@@ -4,8 +4,12 @@ import TweetListItem from "@/components/tweet/tweet-list-item";
 import Link from "next/link";
 import ButtonLogOut from "@/components/form/button-logout";
 
-export default async function User({ params }: { params: { id: string } }) {
-  const user = await getUser(params.id);
+export default async function User({
+  params,
+}: {
+  params: { username: string };
+}) {
+  const user = await getUser(params.username);
   return (
     <div className="container-basic mb-20 *:w-full">
       <h2 className="mb-5 text-lg font-bold text-neutral-400">프로필</h2>

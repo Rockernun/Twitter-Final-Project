@@ -3,11 +3,13 @@ import { InputHTMLAttributes } from "react";
 interface FormInputProps {
   errors?: string[];
   name: string;
+  icon?: string;
 }
 
 export default function FormInput({
   errors = [],
   name,
+  icon,
   ...rest
 }: FormInputProps & InputHTMLAttributes<HTMLInputElement>) {
   console.log(rest);
