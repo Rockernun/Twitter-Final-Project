@@ -95,7 +95,6 @@ export default function FormEditProfile({ userInfo }: FormEditProfileProps) {
         errors={[errors?.username?.message ?? ""]}
       />
       <FormInput
-        placeholder={userInfo?.email}
         icon="💌"
         type="email"
         required
