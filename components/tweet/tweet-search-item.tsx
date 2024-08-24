@@ -18,7 +18,7 @@ export default function TweetSearchItems({
     if (keyword) {
       setTweets(initialTweets);
     }
-  }, [keyword]);
+  }, [initialTweets]);
   return (
     <div className="flex flex-col gap-5 w-full px-2">
       <ul className="w-full flex flex-col gap-5">

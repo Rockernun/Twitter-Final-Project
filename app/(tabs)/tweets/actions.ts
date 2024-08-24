@@ -26,6 +26,7 @@ export default async function addTweet(_: any, formData: FormData) {
     if (session.id) {
       const tweet = await db.tweet.create({
         data: {
+          tweet: "Your tweet content",
           context: result.data.newTweet,
           user: {
             connect: {
