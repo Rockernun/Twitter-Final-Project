@@ -12,7 +12,7 @@ export default async function SearchPages({
     notFound();
   }
 
-  const [tweets] = await Promise.all([searchTweets(keyword)]);
+  const tweets = await searchTweets(keyword);
   return (
     <div className="flex flex-col items-center min-h-screen px-5 pt-6">
       <h1 className="mb-5 text-white font-semibold text-lg">
