@@ -16,11 +16,11 @@ export async function middleware(request: NextRequest) {
   const exists = publicOnlyUrls[request.nextUrl.pathname];
   if (!session.id) {
     if (!exists) {
-      return NextResponse.redirect(new URL("/start", request.url));
+      return NextResponse.redirect("/start");
     }
   } else {
     if (exists) {
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect("/");
     }
   }
 }
