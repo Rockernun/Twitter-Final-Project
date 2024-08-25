@@ -5,10 +5,9 @@ interface Routes {
   [key: string]: boolean;
 }
 
-//  인증되지 않은 사용자가 갈 수 있는 URL을 지정
 const publicOnlyUrls: Routes = {
   "/login": true,
-  "/sms": true,
+  "/start": true,
   "/create-account": true,
 };
 
@@ -17,7 +16,7 @@ export async function middleware(request: NextRequest) {
   const exists = publicOnlyUrls[request.nextUrl.pathname];
   if (!session.id) {
     if (!exists) {
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/start", request.url));
     }
   } else {
     if (exists) {
