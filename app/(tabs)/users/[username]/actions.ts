@@ -1,4 +1,5 @@
 import db from "@/lib/db";
+import { redirect } from "next/navigation";
 
 export async function getUser(username: string) {
   const user = await db.user.findUnique({
@@ -24,5 +25,7 @@ export async function getUser(username: string) {
   });
   if (user) {
     return user;
+  } else {
+    redirect("/login");
   }
 }
